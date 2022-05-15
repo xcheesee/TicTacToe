@@ -22,12 +22,15 @@ const gameBoard = (() => {
 })();
 
 const displayController = (() => {
+
     const body = document.querySelector('body');
     const container = document.createElement('div')
+
     container.classList.add('container')
     gameBoard.square.forEach(element => {
         element.display.addEventListener('click', x => x.target.innerHTML = `<p>${element.value}</p>`)
         container.appendChild(element.display)
     })
+    
     body.appendChild(container)
 })();
