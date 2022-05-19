@@ -1,26 +1,29 @@
 .container {
+    display : grid;
     position: fixed;
-    background-color: black;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    background-color: black;
+    box-sizing: border-box;
 }
 
-.pogg {
-    background-color: white;
+.gameSquare {
     width: 100px;
     height: 100px;
-    box-sizing: border-box;
+    background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 100px;
+    position: relative;
 }
 
-p {
-    margin: 0;
-    padding: 0;
-    font-size: 116px;
+.squareText {
+    text-align: center;
+    display:inline;
+    position: relative;
+    bottom: 10%;
 }

@@ -1,38 +1,51 @@
-const Player = (name, symbol) => {
-    const getName = () => name;
-    const getSymbol = () => symbol;
-    return {getName, getSymbol}
+const player = (name, symbol) => {
+    const getName = () => name
+    const getSymbol = () => symbol
+    return {getName, getSymbol};
 }
 
-let michael = Player('michael', 'O');
-let john = Player('john', 'X');
+let players = [player('michael', 'X'), player('bob', 'O')]
 
 const gameBoard = (() => {
-    const square = Array(9).fill(null).map(function(element) {
-        element = {
-            value : ' ',
+    let square = Array.from({length : 9}, function(x) {
+        x = {
+            value : 'x',
             display : document.createElement('div')
         }
-
-        element.display.classList.add('pogg')
-        element.display.innerHTML = `<p>${element.value}</p>`
-        return element;
+        x.display.classList.add('gameSquare')
+        return x;
     })
     return {square};
 })();
 
-const displayController = (() => {
 
-    const body = document.querySelector('body');
-    const container = document.createElement('div')
-
-    container.classList.add('container')
-    gameBoard.square.forEach(element => {
-        element.display.addEventListener('click', x => x.target.innerHTML = `<p>${element.value}</p>`)
-        container.appendChild(element.display)
-    })
-
-    body.appendChild(container)
+const gameController = (() => {
+    let currPlayer = players[0]
+    return {currPlayer}
 })();
 
-//add input to set players names and button to start game , button runs code to switch players on move until win or draw
+const displayController = (() => {
+    const container = document.createElement('div')
+    container.classList.add('container')
+
+    const body = document.querySelector('body')
+
+    body.appendChild(container)
+    gameBoard.square.forEach(element => {
+        container.appendChild(element.display)
+        element.display.addEventListener("click", x => {
+            if(x.target.innerHTML) return
+            changePlayer();
+            x.target.innerHTML = `<p class="squareText">${gameController.currPlayer.getSymbol()}</p>`;
+            checkWinner();
+        })
+    })
+})();
+
+function changePlayer () {
+    gameController.currPlayer = gameController.currPlayer == players[0]? players[1] : players[0];
+}
+
+function checkWinner () {
+
+}
