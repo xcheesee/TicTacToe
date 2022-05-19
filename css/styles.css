@@ -1,8 +1,6 @@
 .container {
     position: fixed;
     background-color: black;
-    width: 300px;
-    height: 300px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;

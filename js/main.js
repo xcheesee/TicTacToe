@@ -31,6 +31,8 @@ const displayController = (() => {
         element.display.addEventListener('click', x => x.target.innerHTML = `<p>${element.value}</p>`)
         container.appendChild(element.display)
     })
-    
+
     body.appendChild(container)
 })();
+
+//add input to set players names and button to start game , button runs code to switch players on move until win or draw
