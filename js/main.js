@@ -28,8 +28,10 @@ const gameBoard = (() => {
         square.forEach(function (element) {
         element.value = null,
         element.display.innerHTML = ''
-    })
-    displayController.drawBoard()}
+        })
+        displayController.drawBoard()
+    }
+
     return {square, clean}
 
 })();
@@ -68,6 +70,7 @@ const displayController = (() => {
     })}
     return {drawBoard}
 })();
+
 displayController.drawBoard()
 function changePlayer () {
     gameController.currPlayer = gameController.currPlayer == players.list[0]? players.list[1] : players.list[0];
