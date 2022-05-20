@@ -31,3 +31,39 @@
 .winnerLine {
     background-color: green;
 }
+
+.winOverlay {
+    display:none;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.showEle {
+    display: block;
+}
+
+.winBox {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 100px;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: white;
+    padding: 1em;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+}

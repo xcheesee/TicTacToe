@@ -1,4 +1,6 @@
 const body = document.querySelector('body')
+const winnerOverlay = document.querySelector('.winOverlay')
+let button = document.querySelector('button')
 
 const player = (name, symbol) => {
     const getName = () => name
@@ -28,21 +30,22 @@ const gameBoard = (() => {
     const clean = () => {
         // body.removeChild(document.querySelector('.container'))
         square.forEach(function (element) {
-        element.value = null,
-        element.display.innerHTML = ''
+            element.value = null,
+            element.display.innerHTML = ''
         element.display.classList.remove('winnerLine')
-        })
-        displayController.drawBoard()
-        gameController.resetPlays()
-        gameController.currPlayer = players.getList()[0];
-    }
+    })
+    displayController.drawBoard()
+    gameController.resetPlays()
+    gameController.currPlayer = players.getList()[0];
+    winnerOverlay.classList.remove('showEle')
+}
 
-    return {square, clean}
+return {square, clean}
 
 })();
 
-let button = document.querySelector('button')
 button.addEventListener('click', gameBoard.clean)
+
 
 const gameController = (() => {
     let counter = 0;
@@ -53,7 +56,14 @@ const gameController = (() => {
 
     const getPlays = () => counter;
     let resetPlays = () => counter = 0;
-    const declareWin = (player) => `Congrats ${player}`
+    const declareWin = (player) => {    
+        let winBox = document.createElement('div')
+        winBox.classList.add('winBox')
+        winBox.innerHTML = `Congratulations ${player}!`
+        winBox.appendChild(button)
+        winnerOverlay.appendChild(winBox)
+        winnerOverlay.classList.add('showEle')
+    }
 
     return {currPlayer, play, getPlays, resetPlays, declareWin};
 })();
@@ -69,7 +79,7 @@ const displayController = (() => {
             x.target.innerHTML = `<p class="squareText">${gameController.currPlayer.getSymbol()}</p>`;
             element.value = gameController.currPlayer.getSymbol()
             gameController.play();
-            if(checkWinner(gameController.currPlayer, elementIndex) == 'random') {gameBoard.clean()}
+            if(checkWinner(gameController.currPlayer, elementIndex) === 1) {gameBoard.clean()}
             else {
                 changePlayer();
             }
@@ -78,16 +88,6 @@ const displayController = (() => {
     const drawBoard = () => {
         gameBoard.square.forEach(function(square) {
         container.appendChild(square.display)
-        // square.display.addEventListener("click", x => {
-        //     if(x.target.innerHTML) return
-        //     x.target.innerHTML = `<p class="squareText">${gameController.currPlayer.getSymbol()}</p>`;
-        //     square.value = gameController.currPlayer.getSymbol()
-        //     gameController.play();
-        //     if(checkWinner(gameController.currPlayer, squareIndex) == 'random') {gameBoard.clean()}
-        //     else {
-        //         changePlayer();
-        //     }
-        // })
     })}
     return {drawBoard}
 })();
@@ -105,7 +105,7 @@ function checkWinner (roundPlayer, squarePlace) {
     } else if(checkHoriz(gameBoard.square, roundPlayer.getSymbol(), squarePlace) || checkVert(gameBoard.square, roundPlayer.getSymbol(), squarePlace) || checkDiag(gameBoard.square, roundPlayer.getSymbol(), squarePlace)) {
         return gameController.declareWin(roundPlayer.getName());
     } else if(gameController.getPlays() > 8) {
-        return 'random';
+        return 1;
     }
 }
 
@@ -192,6 +192,15 @@ function drawWin(place1, place2, place3, board) {
     board[place1].display.classList.add('winnerLine')
     board[place2].display.classList.add('winnerLine')
     board[place3].display.classList.add('winnerLine')
+
 }
+
+// function showWinner(name) {
+//     let winBox = document.createElement('div')
+//     winBox.classList.add('winBox')
+//     winBox.innerHTML = `Congratulations ${name}!`
+//     winnerOverlay.appendChild(winBox)
+//     winnerOverlay.classList.add('showEle')
+// }
 
 displayController.drawBoard()
