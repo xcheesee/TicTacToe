@@ -15,8 +15,8 @@ const players = (() => {
     return {getList, store}
 })();
 
-players.store(player('michael', 'X'))
-players.store(player('bob', 'O'))
+players.store(player('', 'X'))
+players.store(player('', 'O'))
 
 const gameBoard = (() => {
     let square = Array.from({length : 9}, function(element) {
