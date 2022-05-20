@@ -19,29 +19,28 @@ players.store(player('michael', 'X'))
 players.store(player('bob', 'O'))
 
 const gameBoard = (() => {
-    let square = Array.from({length : 9}, function(x) {
-        x = {
+    let square = Array.from({length : 9}, function(element) {
+        element = {
             value : null,
             display : document.createElement('div')
         }
-        x.display.classList.add('gameSquare')
-        return x;
-    })
+        element.display.classList.add('gameSquare')
+        return element;
+    });
     const clean = () => {
-        // body.removeChild(document.querySelector('.container'))
         square.forEach(function (element) {
             element.value = null,
             element.display.innerHTML = ''
         element.display.classList.remove('winnerLine')
-    })
-    displayController.drawBoard()
-    gameController.resetPlays()
-    gameController.currPlayer = players.getList()[0];
-    winnerOverlay.classList.remove('showEle')
-}
+        })
+        displayController.drawBoard()
+        gameController.resetPlays()
+        gameController.currPlayer = players.getList()[0];
+        winnerOverlay.classList.remove('showEle')
+        body.appendChild(button)
+    };
 
 return {square, clean}
-
 })();
 
 button.addEventListener('click', gameBoard.clean)
@@ -50,16 +49,13 @@ button.addEventListener('click', gameBoard.clean)
 const gameController = (() => {
     let counter = 0;
     let currPlayer = players.getList()[0]
-    let play = () => {
-        return counter++;
-    }
-
-    const getPlays = () => counter;
+    let play = () => counter++;
     let resetPlays = () => counter = 0;
+    const getPlays = () => counter;
     const declareWin = (player) => {    
         let winBox = document.createElement('div')
         winBox.classList.add('winBox')
-        winBox.innerHTML = `Congratulations ${player}!`
+        winBox.innerHTML = `Congratulations , ${player}, you won!`
         winBox.appendChild(button)
         winnerOverlay.appendChild(winBox)
         winnerOverlay.classList.add('showEle')
@@ -69,18 +65,20 @@ const gameController = (() => {
 })();
 
 const displayController = (() => {
-
     const container = document.createElement('div')
     container.classList.add('container')
     body.appendChild(container)
+
     gameBoard.square.forEach(function(element, elementIndex) {
         element.display.addEventListener("click", x => {
             if(x.target.innerHTML) return
+
             x.target.innerHTML = `<p class="squareText">${gameController.currPlayer.getSymbol()}</p>`;
             element.value = gameController.currPlayer.getSymbol()
             gameController.play();
-            if(checkWinner(gameController.currPlayer, elementIndex) === 1) {gameBoard.clean()}
-            else {
+            if(checkWinner(gameController.currPlayer, elementIndex) === 1) {
+                gameBoard.clean()
+            } else {
                 changePlayer();
             }
         })
@@ -99,10 +97,11 @@ function changePlayer () {
 }
 
 function checkWinner (roundPlayer, squarePlace) {
+    let args = [gameBoard.square, roundPlayer.getSymbol(), squarePlace]
     let filledSquares = gameBoard.square
     if(!filledSquares[1].value && !filledSquares[3].value && !filledSquares[4].value && !filledSquares[5].value && !filledSquares[7].value || gameController.getPlays() < 4){
         return 'inconclusive';
-    } else if(checkHoriz(gameBoard.square, roundPlayer.getSymbol(), squarePlace) || checkVert(gameBoard.square, roundPlayer.getSymbol(), squarePlace) || checkDiag(gameBoard.square, roundPlayer.getSymbol(), squarePlace)) {
+    } else if(checkHoriz(...args) || checkVert(...args) || checkDiag(...args)) {
         return gameController.declareWin(roundPlayer.getName());
     } else if(gameController.getPlays() > 8) {
         return 1;
@@ -131,15 +130,17 @@ function checkVert(board, symb, index) {
     }
 }
 
-function checkDiag (board, symb, index) {
+function checkDiag(board, symb, index) {
     if(index == 4) {
-        if(board[index].value == symb && board[index + 2].value == symb && board[index - 2].value == symb || board[index].value == symb && board[index + 4].value == symb && board[index - 4].value == symb) {
-            // drawWin(index, index + 4, index + 8, board) need to break the conditionals to correct function
+        if(board[index].value == symb && board[index + 2].value == symb && board[index - 2].value == symb ) {
+            drawWin(index, index + 2, index + -2, board)
+            return true;
+        } else if (board[index].value == symb && board[index + 4].value == symb && board[index - 4].value == symb){
+            drawWin(index, index + 4, index -4, board)
             return true;
         }
         return false;
-    }
-    else if(index == 0) {
+    } else if(index == 0) {
         if(board[index].value == symb && board[index + 4].value == symb && board[index + 8].value == symb) {
             drawWin(index, index + 4, index + 8, board)
             return true;
@@ -192,15 +193,6 @@ function drawWin(place1, place2, place3, board) {
     board[place1].display.classList.add('winnerLine')
     board[place2].display.classList.add('winnerLine')
     board[place3].display.classList.add('winnerLine')
-
 }
-
-// function showWinner(name) {
-//     let winBox = document.createElement('div')
-//     winBox.classList.add('winBox')
-//     winBox.innerHTML = `Congratulations ${name}!`
-//     winnerOverlay.appendChild(winBox)
-//     winnerOverlay.classList.add('showEle')
-// }
 
 displayController.drawBoard()
