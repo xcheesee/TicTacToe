@@ -1,3 +1,5 @@
+const body = document.querySelector('body')
+
 const player = (name, symbol) => {
     const getName = () => name
     const getSymbol = () => symbol
@@ -21,11 +23,18 @@ const gameBoard = (() => {
         x.display.classList.add('gameSquare')
         return x;
     })
-    return {square}
+    const clean = () => {
+        body.removeChild(document.querySelector('.container'))
+        square.forEach(function (element) {
+        element.value = null,
+        element.display.innerHTML = ''
+    })
+    displayController.drawBoard()}
+    return {square, clean}
 
 })();
-
-
+let button = document.querySelector('button')
+button.addEventListener('click', gameBoard.clean)
 const gameController = (() => {
     let counter = 0;
     let currPlayer = players.list[0]
@@ -34,20 +43,19 @@ const gameController = (() => {
     }
 
     const getPlays = () => counter;
-    const declareDraw = () => 'Is a Draw'
+    const declareDraw = () => gameBoard.clean()
     const declareWin = (player) => `Congrats ${player}`
 
     return {currPlayer, play, getPlays, declareDraw, declareWin};
 })();
 
 const displayController = (() => {
-    const container = document.createElement('div')
-    container.classList.add('container')
-    
-    const body = document.querySelector('body')
-    
-    body.appendChild(container)
-    gameBoard.square.forEach(function(square, squareIndex) {
+
+    const drawBoard = () => {
+        const container = document.createElement('div')
+        container.classList.add('container')
+        body.appendChild(container)
+        gameBoard.square.forEach(function(square, squareIndex) {
         container.appendChild(square.display)
         square.display.addEventListener("click", x => {
             if(x.target.innerHTML) return
@@ -57,9 +65,10 @@ const displayController = (() => {
             changePlayer();
             gameController.play();
         })
-    })
+    })}
+    return {drawBoard}
 })();
-
+displayController.drawBoard()
 function changePlayer () {
     gameController.currPlayer = gameController.currPlayer == players.list[0]? players.list[1] : players.list[0];
     
