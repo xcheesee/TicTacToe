@@ -99,8 +99,8 @@ function changePlayer () {
 function checkWinner (roundPlayer, squarePlace) {
     let args = [gameBoard.square, roundPlayer.getSymbol(), squarePlace]
     let filledSquares = gameBoard.square
-    if(!filledSquares[1].value && !filledSquares[3].value && !filledSquares[4].value && !filledSquares[5].value && !filledSquares[7].value || gameController.getPlays() < 4){
-        return 'inconclusive';
+    if(!filledSquares[1].value && !filledSquares[3].value && !filledSquares[4].value && !filledSquares[5].value && !filledSquares[7].value || gameController.getPlays() < 5){
+        return ;
     } else if(checkHoriz(...args) || checkVert(...args) || checkDiag(...args)) {
         return gameController.declareWin(roundPlayer.getName());
     } else if(gameController.getPlays() > 8) {
