@@ -51,7 +51,7 @@ function changePlayer () {
 function checkWinner (roundPlayer, squarePlace) {
     let filledSquares = gameBoard.square
     if(!filledSquares[1].value && !filledSquares[3].value && !filledSquares[4].value && !filledSquares[5].value && !filledSquares[7].value){
-        return "pog"
+        return
     }
     if(checkHoriz(gameBoard.square, roundPlayer.getSymbol(), squarePlace) || checkVert(gameBoard.square, roundPlayer.getSymbol(), squarePlace) || checkDiag(gameBoard.square, roundPlayer.getSymbol(), squarePlace)) {
         return `Congratulations ${roundPlayer.getName()}`
