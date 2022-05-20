@@ -9,7 +9,8 @@ const player = (name, symbol) => {
 const players = (() => {
     let list = []
     const store = player => list.push(player)
-    return {list, store}
+    const getList = () => list;
+    return {getList, store}
 })();
 
 players.store(player('michael', 'X'))
@@ -33,6 +34,7 @@ const gameBoard = (() => {
         })
         displayController.drawBoard()
         gameController.resetPlays()
+        gameController.currPlayer = players.getList()[0];
     }
 
     return {square, clean}
@@ -44,7 +46,7 @@ button.addEventListener('click', gameBoard.clean)
 
 const gameController = (() => {
     let counter = 0;
-    let currPlayer = players.list[0]
+    let currPlayer = players.getList()[0]
     let play = () => {
         return counter++;
     }
@@ -92,7 +94,7 @@ const displayController = (() => {
 
 
 function changePlayer () {
-    gameController.currPlayer = gameController.currPlayer == players.list[0]? players.list[1] : players.list[0];
+    gameController.currPlayer = gameController.currPlayer == players.getList()[0]? players.getList()[1] : players.getList()[0];
     
 }
 
