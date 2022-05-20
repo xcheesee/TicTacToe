@@ -33,7 +33,6 @@ const displayController = (() => {
     body.appendChild(container)
     gameBoard.square.forEach(function(square, squareIndex) {
         container.appendChild(square.display)
-        console.log(squareIndex)
         square.display.addEventListener("click", x => {
             if(x.target.innerHTML) return
             x.target.innerHTML = `<p class="squareText">${gameController.currPlayer.getSymbol()}</p>`;
@@ -59,7 +58,7 @@ function checkWinner (roundPlayer, squarePlace) {
     }
 }
 
-function checkHoriz(board, symb, index) {
+function checkVert(board, symb, index) {
     if(index < 3) {
         if(board[index].value == symb && board[index + 3].value == symb && board[index + 6].value == symb) {
             return true
@@ -81,9 +80,55 @@ function checkHoriz(board, symb, index) {
 }
 
 function checkDiag (board, symb, index) {
-    return false
+    if(index == 4) {
+        if(board[index].value == symb && board[index + 2].value == symb && board[index - 2].value == symb || board[index].value == symb && board[index + 4].value == symb && board[index - 4].value == symb) {
+            return true;
+        }
+        return false;
+    }
+    else if(index == 0) {
+        if(board[index].value == symb && board[index + 4].value == symb && board[index + 8].value == symb) {
+            return true;
+        }
+        return false;
+    }
+    else if(index == 2) {
+        if(board[index].value == symb && board[index + 2].value == symb && board[index + 4].value == symb) {
+            return true;
+        }
+        return false;
+    }
+    else if(index == 6) {
+        if(board[index].value == symb && board[index - 2].value == symb && board[index - 4].value == symb) {
+            return true;
+        }
+        return false;
+    }
+    else if(index == 8) {
+        if(board[index].value == symb && board[index - 4].value == symb && board[index - 8].value == symb) {
+            return true;
+        }
+        return false;
+    }
 }
 
-function checkVert (board, symb, index) {
-    return false
+function checkHoriz (board, symb, index) {
+    if(index == 0 || index == 3 || index == 6) {
+        if(board[index].value == symb && board[index + 1].value == symb && board[index + 2].value == symb) {
+            return true;
+        }
+        return false;
+    }
+    else if(index == 1 || index == 4 || index == 7) {
+        if(board[index].value == symb && board[index + 1].value == symb && board[index - 1].value == symb) {
+            return true;
+        }
+        return false;
+    }
+    else {
+        if(board[index].value == symb && board[index - 1].value == symb && board[index - 2].value == symb) {
+            return true;
+        }
+        return false;
+    }
 }
