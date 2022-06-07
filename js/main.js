@@ -15,7 +15,7 @@ const players = (() => {
     return {getList, store}
 })();
 
-players.store(player('', 'X'))
+players.store(player('', 'X'))//add name as player input
 players.store(player('', 'O'))
 
 const gameBoard = (() => {
